@@ -22,7 +22,21 @@ class SearchRepoImpl(
         }
     }
 
-    override suspend fun getRecipeDetails(id: String): Result<RecipeDetails> {
-        TODO("Not yet implemented")
+    override suspend fun getRecipeDetails(i: String): Result<RecipeDetails> {
+        val response = searchApiService.getRecipeDetails(i)
+
+        return if (response.isSuccessful) {
+            response.body()?.meals?.let {
+                if (it.isNotEmpty()) {
+                    Result.success(it.first().toDomain())
+                } else {
+                    Result.failure(Exception("error occurred"))
+                }
+            } ?: run {
+                Result.failure(Exception("error occurred"))
+            }
+        } else {
+            Result.failure(Exception("error occurred"))
+        }
     }
 }
