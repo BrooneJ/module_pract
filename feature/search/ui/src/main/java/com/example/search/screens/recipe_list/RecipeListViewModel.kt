@@ -6,6 +6,7 @@ import com.example.common.utils.NetworkResult
 import com.example.common.utils.UiText
 import com.example.search.domain.model.Recipe
 import com.example.search.domain.use_case.GetAllRecipeUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
+@HiltViewModel
 class RecipeListViewModel @Inject constructor(
     private val getAllRecipeUseCase: GetAllRecipeUseCase
 ) : ViewModel() {
