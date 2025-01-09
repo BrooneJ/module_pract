@@ -42,6 +42,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":common"))
+    implementation(project(":feature:search:data"))
+    implementation(project(":feature:search:domain"))
+    implementation(project(":feature:search:ui"))
+    implementation(project(":media_player"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -51,6 +56,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    implementation(libs.navigation.compose)
 
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.kapt)

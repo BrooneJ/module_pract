@@ -43,6 +43,7 @@ dependencies {
     implementation(libs.material)
 
     implementation(libs.lifecycle.viewmodel)
+    implementation(libs.navigation.compose)
 
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.kapt)
