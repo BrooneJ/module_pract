@@ -7,7 +7,5 @@ interface FeatureApi {
     fun registerGraph(
         navGraphBuilder: NavGraphBuilder,
         navHostController: NavHostController
-    ) {
-
-    }
+    )
 }
