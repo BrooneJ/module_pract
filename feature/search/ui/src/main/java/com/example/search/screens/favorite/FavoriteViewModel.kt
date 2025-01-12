@@ -6,6 +6,7 @@ import com.example.common.utils.UiText
 import com.example.search.domain.model.Recipe
 import com.example.search.domain.use_case.DeleteRecipeUseCase
 import com.example.search.domain.use_case.GetAllRecipeFromLocalDbUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class FavoriteViewModel @Inject constructor(
     private val getAllRecipeFromLocalDbUseCase: GetAllRecipeFromLocalDbUseCase,
     private val deleteRecipeUseCase: DeleteRecipeUseCase

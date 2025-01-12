@@ -202,10 +202,13 @@ fun FavoriteScreen(
                                             )
                                         )
                                     },
-                                    modifier = Modifier.background(
-                                        color = Color.White,
-                                        shape = CircleShape
-                                    )
+                                    modifier = Modifier
+                                        .align(Alignment.TopEnd)
+                                        .padding(12.dp)
+                                        .background(
+                                            color = Color.White,
+                                            shape = CircleShape
+                                        )
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Delete,

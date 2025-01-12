@@ -16,8 +16,12 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -65,29 +69,41 @@ fun RecipeListScreen(
                     is RecipeList.Navigation.GoToRecipeDetails -> {
                         navHostController.navigate(NavigationRoute.RecipeDetails.sendId(it.id))
                     }
+
+                    RecipeList.Navigation.GoToFavoriteScreen -> {
+                        navHostController.navigate(NavigationRoute.FavoriteScreen.route)
+                    }
                 }
             }
     }
 
-    Scaffold(topBar = {
-        TextField(
-            placeholder = {
-                Text(
-                    text = "Search here...",
-                    style = MaterialTheme.typography.bodySmall
-                )
-            },
-            value = query.value, onValueChange = {
-                query.value = it
-                viewModel.onEvent(RecipeList.Event.SearchRecipe(query.value))
-            }, colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ), modifier = Modifier.fillMaxWidth()
-        )
-    }) {
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                viewModel.onEvent(RecipeList.Event.FavoriteScreen)
+            }) {
+                Icon(imageVector = Icons.Default.Star, contentDescription = null)
+            }
+        },
+        topBar = {
+            TextField(
+                placeholder = {
+                    Text(
+                        text = "Search here...",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                },
+                value = query.value, onValueChange = {
+                    query.value = it
+                    viewModel.onEvent(RecipeList.Event.SearchRecipe(query.value))
+                }, colors = TextFieldDefaults.colors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ), modifier = Modifier.fillMaxWidth()
+            )
+        }) {
         if (uiState.value.isLoading) {
             Box(
                 modifier = Modifier
