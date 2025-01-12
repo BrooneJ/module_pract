@@ -1,5 +1,6 @@
 package com.example.search.navigation
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.composable
@@ -40,8 +41,10 @@ class SearchFeatureApiImpl : SearchFeatureApi {
             composable(route = NavigationRoute.RecipeDetails.route) {
                 val viewModel = hiltViewModel<RecipeDetailsViewModel>()
                 val meaId = it.arguments?.getString("id")
-                meaId?.let {
-                    viewModel.onEvent(RecipeDetails.Event.FetchRecipeDetails(meaId))
+                LaunchedEffect(key1 = meaId) {
+                    meaId?.let {
+                        viewModel.onEvent(RecipeDetails.Event.FetchRecipeDetails(meaId))
+                    }
                 }
                 RecipeDetailsScreen(viewModel = viewModel)
             }

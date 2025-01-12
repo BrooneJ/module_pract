@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.common.utils.UiText
@@ -76,7 +77,8 @@ fun RecipeDetailsScreen(modifier: Modifier = Modifier, viewModel: RecipeDetailsV
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(300.dp)
+                        .height(350.dp),
+                    contentScale = ContentScale.Crop
                 )
 
                 Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
@@ -87,23 +89,25 @@ fun RecipeDetailsScreen(modifier: Modifier = Modifier, viewModel: RecipeDetailsV
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     recipeDetails.ingredientsPair.forEach {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 12.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            AsyncImage(
-                                model = getIngredientsImageUrl(it.first),
-                                contentDescription = null,
+                        if (it.first.isNotEmpty() || it.second.isNotEmpty()) {
+                            Row(
                                 modifier = Modifier
-                                    .size(60.dp)
-                                    .background(color = Color.White, shape = CircleShape)
-                                    .clip(CircleShape)
-                            )
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 12.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                AsyncImage(
+                                    model = getIngredientsImageUrl(it.first),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(60.dp)
+                                        .background(color = Color.White, shape = CircleShape)
+                                        .clip(CircleShape)
+                                )
 
-                            Text(text = it.second, style = MaterialTheme.typography.bodyMedium)
+                                Text(text = it.second, style = MaterialTheme.typography.bodyMedium)
+                            }
                         }
                     }
 
