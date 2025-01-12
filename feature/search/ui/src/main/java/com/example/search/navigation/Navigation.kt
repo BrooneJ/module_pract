@@ -11,6 +11,8 @@ import com.example.common.navigation.NavigationSubGraphRoute
 import com.example.search.screens.details.RecipeDetails
 import com.example.search.screens.details.RecipeDetailsScreen
 import com.example.search.screens.details.RecipeDetailsViewModel
+import com.example.search.screens.favorite.FavoriteScreen
+import com.example.search.screens.favorite.FavoriteViewModel
 import com.example.search.screens.recipe_list.RecipeList
 import com.example.search.screens.recipe_list.RecipeListScreen
 import com.example.search.screens.recipe_list.RecipeListViewModel
@@ -52,6 +54,16 @@ class SearchFeatureApiImpl : SearchFeatureApi {
                     onNavigationClick = { viewModel.onEvent(RecipeDetails.Event.GoToRecipeListScreen) },
                     onDelete = { viewModel.onEvent(RecipeDetails.Event.DeleteRecipe(it)) },
                     onFavoriteClick = { viewModel.onEvent(RecipeDetails.Event.InsertRecipe(it)) })
+            }
+
+            composable(route = NavigationRoute.FavoriteScreen.route) {
+                val viewModel = hiltViewModel<FavoriteViewModel>()
+                FavoriteScreen(
+                    navHostController = navHostController,
+                    viewModel = viewModel,
+                    onClick = { mealId ->
+                        viewModel.onEvent(FavoriteScreen.Event.GoToDetails(mealId))
+                    })
             }
         }
     }
