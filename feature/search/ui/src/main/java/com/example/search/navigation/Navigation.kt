@@ -7,6 +7,7 @@ import androidx.navigation.compose.navigation
 import com.example.common.navigation.FeatureApi
 import com.example.common.navigation.NavigationRoute
 import com.example.common.navigation.NavigationSubGraphRoute
+import com.example.search.screens.recipe_list.RecipeList
 import com.example.search.screens.recipe_list.RecipeListScreen
 import com.example.search.screens.recipe_list.RecipeListViewModel
 
@@ -24,7 +25,13 @@ class SearchFeatureApiImpl : SearchFeatureApi {
 
             composable(route = NavigationRoute.RecipeList.route) {
                 val viewModel = hiltViewModel<RecipeListViewModel>()
-                RecipeListScreen(modifier = Modifier, viewModel = viewModel) {}
+                RecipeListScreen(
+                    modifier = Modifier,
+                    viewModel = viewModel,
+                    navHostController = navHostController
+                ) { mealId ->
+                    viewModel.onEvent(RecipeList.Event.GoToRecipeDetails(mealId))
+                }
             }
 
             composable(route = NavigationRoute.RecipeDetails.route) {

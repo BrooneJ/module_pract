@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -34,19 +35,38 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.flowWithLifecycle
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.common.navigation.NavigationRoute
 import com.example.common.utils.UiText
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RecipeListScreen(
     modifier: Modifier = Modifier,
     viewModel: RecipeListViewModel,
+    navHostController: NavHostController,
     onClick: (String) -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState()
     val query = rememberSaveable {
         mutableStateOf("")
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(key1 = viewModel.navigation) {
+        viewModel.navigation.flowWithLifecycle(lifecycleOwner.lifecycle)
+            .collectLatest {
+                when (it) {
+                    is RecipeList.Navigation.GoToRecipeDetails -> {
+                        navHostController.navigate(NavigationRoute.RecipeDetails.sendId(it.id))
+                    }
+                }
+            }
     }
 
     Scaffold(topBar = {
