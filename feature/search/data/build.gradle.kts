@@ -51,6 +51,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson.convertor)
 
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.kapt)
 }
