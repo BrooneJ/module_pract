@@ -46,7 +46,12 @@ class SearchFeatureApiImpl : SearchFeatureApi {
                         viewModel.onEvent(RecipeDetails.Event.FetchRecipeDetails(meaId))
                     }
                 }
-                RecipeDetailsScreen(viewModel = viewModel)
+                RecipeDetailsScreen(
+                    viewModel = viewModel,
+                    navHostController = navHostController,
+                    onNavigationClick = { viewModel.onEvent(RecipeDetails.Event.GoToRecipeListScreen) },
+                    onDelete = {},
+                    onFavoriteClick = {})
             }
         }
     }
