@@ -1,13 +1,16 @@
 package com.example.search.data.repository
 
+import com.example.search.data.local.RecipeDao
 import com.example.search.data.mappers.toDomain
 import com.example.search.data.remote.SearchApiService
 import com.example.search.domain.model.Recipe
 import com.example.search.domain.model.RecipeDetails
 import com.example.search.domain.repository.SearchRepository
+import kotlinx.coroutines.flow.Flow
 
 class SearchRepoImpl(
-    private val searchApiService: SearchApiService
+    private val searchApiService: SearchApiService,
+    private val recipeDao: RecipeDao
 ) : SearchRepository {
     override suspend fun getRecipes(s: String): Result<List<Recipe>> {
         return try {
@@ -46,5 +49,17 @@ class SearchRepoImpl(
         } catch (e: Exception) {
             return Result.failure(e)
         }
+    }
+
+    override suspend fun insertRecipe(recipe: Recipe) {
+        recipeDao.insertRecipe(recipe)
+    }
+
+    override suspend fun deleteRecipe(recipe: Recipe) {
+        recipeDao.deleteRecipe(recipe)
+    }
+
+    override fun getAllRecipes(): Flow<List<Recipe>> {
+        return recipeDao.getAllRecipes()
     }
 }

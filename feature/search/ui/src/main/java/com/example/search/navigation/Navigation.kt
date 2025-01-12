@@ -50,8 +50,8 @@ class SearchFeatureApiImpl : SearchFeatureApi {
                     viewModel = viewModel,
                     navHostController = navHostController,
                     onNavigationClick = { viewModel.onEvent(RecipeDetails.Event.GoToRecipeListScreen) },
-                    onDelete = {},
-                    onFavoriteClick = {})
+                    onDelete = { viewModel.onEvent(RecipeDetails.Event.DeleteRecipe(it)) },
+                    onFavoriteClick = { viewModel.onEvent(RecipeDetails.Event.InsertRecipe(it)) })
             }
         }
     }

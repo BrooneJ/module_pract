@@ -4,7 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.utils.NetworkResult
 import com.example.common.utils.UiText
+import com.example.search.domain.model.Recipe
+import com.example.search.domain.use_case.DeleteRecipeUseCase
 import com.example.search.domain.use_case.GetRecipeDetailsUseCase
+import com.example.search.domain.use_case.InsertRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +23,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecipeDetailsViewModel @Inject constructor(
-    private val getRecipeDetailsUseCase: GetRecipeDetailsUseCase
+    private val getRecipeDetailsUseCase: GetRecipeDetailsUseCase,
+    private val deleteRecipeUseCase: DeleteRecipeUseCase,
+    private val insertRecipeUseCase: InsertRecipeUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RecipeDetails.UiState())
@@ -37,6 +42,16 @@ class RecipeDetailsViewModel @Inject constructor(
 
             RecipeDetails.Event.GoToRecipeListScreen -> viewModelScope.launch {
                 _navigation.send(RecipeDetails.Navigation.GoToRecipeListScreen)
+            }
+
+            is RecipeDetails.Event.DeleteRecipe -> {
+                deleteRecipeUseCase.invoke(event.recipeDetails.toRecipe())
+                    .launchIn(viewModelScope)
+            }
+
+            is RecipeDetails.Event.InsertRecipe -> {
+                insertRecipeUseCase.invoke(event.recipeDetails.toRecipe())
+                    .launchIn(viewModelScope)
             }
         }
     }
@@ -61,6 +76,19 @@ class RecipeDetailsViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+
+    fun com.example.search.domain.model.RecipeDetails.toRecipe(): Recipe {
+        return Recipe(
+            idMeal,
+            strMeal,
+            strCategory,
+            strArea,
+            strInstructions,
+            strMealThumb,
+            strYoutube,
+            strInstructions
+        )
+    }
 }
 
 object RecipeDetails {
@@ -77,6 +105,12 @@ object RecipeDetails {
 
     sealed interface Event {
         data class FetchRecipeDetails(val id: String) : Event
+
+        data class InsertRecipe(val recipeDetails: com.example.search.domain.model.RecipeDetails) :
+            Event
+
+        data class DeleteRecipe(val recipeDetails: com.example.search.domain.model.RecipeDetails) :
+            Event
 
         data object GoToRecipeListScreen : Event
     }

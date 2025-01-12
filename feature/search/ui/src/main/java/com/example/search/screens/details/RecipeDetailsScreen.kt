@@ -81,10 +81,18 @@ fun RecipeDetailsScreen(
                     onNavigationClick.invoke()
                 })
         }, actions = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = {
+                uiState.value.data?.let {
+                    onFavoriteClick.invoke(it)
+                }
+            }) {
                 Icon(imageVector = Icons.Default.Star, contentDescription = null)
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = {
+                uiState.value.data?.let {
+                    onDelete.invoke(it)
+                }
+            }) {
                 Icon(imageVector = Icons.Default.Delete, contentDescription = null)
             }
         })
