@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
+    testImplementation(libs.junit.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
@@ -56,4 +57,7 @@ dependencies {
 
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.kapt)
+
+    testImplementation(libs.test.coroutines)
+    testImplementation(libs.mockito)
 }
