@@ -1,6 +1,7 @@
 package com.example.module_prac.di
 
 import android.content.Context
+import com.example.media_player.navigation.MediaPlayerFeatureApi
 import com.example.module_prac.local.AppDatabase
 import com.example.module_prac.navigation.NavigationSubGraphs
 import com.example.search.data.local.RecipeDao
@@ -17,8 +18,11 @@ import javax.inject.Singleton
 object AppModule {
 
     @Provides
-    fun provideNavigationSubGraphs(searchFeatureApi: SearchFeatureApi): NavigationSubGraphs {
-        return NavigationSubGraphs(searchFeatureApi)
+    fun provideNavigationSubGraphs(
+        searchFeatureApi: SearchFeatureApi,
+        mediaPlayerFeatureApi: MediaPlayerFeatureApi
+    ): NavigationSubGraphs {
+        return NavigationSubGraphs(searchFeatureApi, mediaPlayerFeatureApi)
     }
 
     @Provides

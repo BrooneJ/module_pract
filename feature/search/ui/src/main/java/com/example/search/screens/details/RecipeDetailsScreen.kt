@@ -40,6 +40,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.common.navigation.NavigationRoute
 import com.example.common.utils.UiText
 import com.example.search.domain.model.RecipeDetails
 import kotlinx.coroutines.flow.collectLatest
@@ -65,6 +66,11 @@ fun RecipeDetailsScreen(
                 when (navigation) {
                     com.example.search.screens.details.RecipeDetails.Navigation.GoToRecipeListScreen ->
                         navHostController.popBackStack()
+
+                    is com.example.search.screens.details.RecipeDetails.Navigation.GoToMediaPlayer -> {
+                        val videoId = navigation.youtubeUrl.split("v=").last()
+                        navHostController.navigate(NavigationRoute.MediaPlayer.sendUrl(videoId))
+                    }
                 }
             }
     }
@@ -164,8 +170,20 @@ fun RecipeDetailsScreen(
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
-                    Text(text = "Watch Youtube Video", style = MaterialTheme.typography.bodySmall)
-                    Spacer(modifier = Modifier.height(32.dp))
+                    if (recipeDetails.strYoutube.isNotEmpty()) {
+                        Text(
+                            text = "Watch Youtube Video",
+                            modifier = Modifier.clickable {
+                                viewModel.onEvent(
+                                    com.example.search.screens.details.RecipeDetails.Event.GoToMediaPlayer(
+                                        recipeDetails.strYoutube
+                                    )
+                                )
+                            },
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                        Spacer(modifier = Modifier.height(32.dp))
+                    }
                 }
             }
         }
