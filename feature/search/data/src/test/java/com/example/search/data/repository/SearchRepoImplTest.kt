@@ -7,6 +7,7 @@ import com.example.search.data.model.RecipeDetailsResponse
 import com.example.search.data.model.RecipeResponse
 import com.example.search.data.remote.SearchApiService
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody
 import org.junit.Test
@@ -137,6 +138,25 @@ class SearchRepoImplTest {
         val response = repo.getRecipeDetails("id")
 
         assertEquals("error", response.exceptionOrNull()?.message)
+    }
+
+    @Test
+    fun test_insert_recipe() = runTest {
+        val repo = SearchRepoImpl(searchApiService, FakeRecipeDao())
+        val recipe = getRecipeResponse().meals?.toDomain()?.first()
+        repo.insertRecipe(recipe!!)
+
+        assertEquals(recipe, repo.getAllRecipes().first().first())
+    }
+
+    @Test
+    fun test_delete_recipe() = runTest {
+        val repo = SearchRepoImpl(searchApiService, FakeRecipeDao())
+        val recipe = getRecipeResponse().meals?.toDomain()?.first()
+        repo.insertRecipe(recipe!!)
+        repo.deleteRecipe(recipe)
+
+        assertEquals(0, repo.getAllRecipes().first().size)
     }
 }
 
