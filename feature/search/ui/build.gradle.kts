@@ -63,4 +63,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.coil.compose)
+
+    testImplementation(libs.test.coroutines)
+    testImplementation(libs.mockito)
 }
