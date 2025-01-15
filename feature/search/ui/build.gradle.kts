@@ -42,6 +42,10 @@ android {
     }
 }
 
+tasks.withType<Test>().configureEach {
+    jvmArgs("-XX:+EnableDynamicAgentLoading")
+}
+
 dependencies {
     implementation(project(":feature:search:domain"))
     implementation(project(":common"))

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.common.utils.NetworkResult
 import com.example.common.utils.UiText
 import com.example.search.domain.model.Recipe
+import com.example.search.domain.model.RecipeDetails
 import com.example.search.domain.use_case.GetAllRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -65,6 +66,19 @@ class RecipeListViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
 
+}
+
+fun RecipeDetails.toRecipe(): Recipe {
+    return Recipe(
+        idMeal,
+        strArea,
+        strMeal,
+        strMealThumb,
+        strCategory,
+        strTags,
+        strYoutube,
+        strInstructions
+    )
 }
 
 object RecipeList {
