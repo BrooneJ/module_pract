@@ -7,16 +7,20 @@ import com.example.search.domain.model.RecipeDetails
 import com.example.search.domain.use_case.DeleteRecipeUseCase
 import com.example.search.domain.use_case.GetRecipeDetailsUseCase
 import com.example.search.domain.use_case.InsertRecipeUseCase
-import com.example.search.screens.recipe_list.MainDispatcherRule
-import com.example.search.screens.recipe_list.toRecipe
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 
@@ -122,11 +126,13 @@ class RecipeDetailsViewModelTest {
                 flowOf(Unit)
             }
 
+
         val viewModel = RecipeDetailsViewModel(
-            getRecipeDetailsUseCase = getRecipeDetailsUseCase,
-            deleteRecipeUseCase = deleteRecipeUseCase,
-            insertRecipeUseCase = insertRecipeUseCase
+            getRecipeDetailsUseCase,
+            deleteRecipeUseCase,
+            insertRecipeUseCase
         )
+
         viewModel.onEvent(
             com.example.search.screens.details.RecipeDetails.Event.InsertRecipe(getRecipeDetails())
         )
@@ -167,6 +173,17 @@ class RecipeDetailsViewModelTest {
     }
 }
 
+class MainDispatcherRule(val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()) :
+    TestWatcher() {
+    override fun starting(description: Description?) {
+        Dispatchers.setMain(testDispatcher)
+    }
+
+    override fun finished(description: Description?) {
+        Dispatchers.resetMain()
+    }
+
+}
 
 private fun getRecipeResponse(): List<Recipe> {
     return listOf(
